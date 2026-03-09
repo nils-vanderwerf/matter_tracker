@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_03_09_000005) do
+ActiveRecord::Schema[7.0].define(version: 2026_03_09_013730) do
   create_table "clients", force: :cascade do |t|
     t.string "name", null: false
     t.string "email"
@@ -33,6 +33,14 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_09_000005) do
     t.index ["client_id"], name: "index_matters_on_client_id"
   end
 
+  create_table "notes", force: :cascade do |t|
+    t.integer "matter_id", null: false
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["matter_id"], name: "index_notes_on_matter_id"
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
@@ -46,5 +54,6 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_09_000005) do
   end
 
   add_foreign_key "matters", "clients"
+  add_foreign_key "notes", "matters"
   add_foreign_key "tasks", "matters"
 end

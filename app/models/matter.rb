@@ -4,6 +4,7 @@ class Matter < ApplicationRecord
 
   belongs_to :client, optional: true
   has_many :tasks, dependent: :destroy
+  has_many :notes, dependent: :destroy
 
   validates :title, presence: true
   validates :matter_type, inclusion: { in: MATTER_TYPES }

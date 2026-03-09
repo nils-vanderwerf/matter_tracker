@@ -61,7 +61,7 @@ Represents a legal matter being tracked.
 | `description` | text | Optional |
 | `client_id` | integer | FK → clients |
 
-Associations: `belongs_to :client` (optional), `has_many :tasks`
+Associations: `belongs_to :client` (optional), `has_many :tasks`, `has_many :notes`
 Scopes: `open`, `pending`, `closed`, `by_due_date`
 
 ---
@@ -95,3 +95,16 @@ A task or action item associated with a matter.
 
 Associations: `belongs_to :matter`
 Scopes: `pending`, `in_progress`, `completed`, `by_due_date`, `high_priority`
+
+---
+
+### Note (`app/models/note.rb`)
+A timestamped note attached to a matter.
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `body` | text | The note content |
+| `matter_id` | integer | FK → matters, required |
+
+Associations: `belongs_to :matter`
+Routes: `create`, `destroy`, `edit`, `update` only (no index/show — notes are displayed inline on the matter show page)
