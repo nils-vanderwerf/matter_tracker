@@ -153,7 +153,7 @@ GEM
       date
       stringio
     public_suffix (6.0.2)
-    puma (5.6.9)
+    puma (6.6.1)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (2.2.22)
@@ -241,7 +241,7 @@ DEPENDENCIES
   capybara
   debug
   jbuilder
-  puma (~> 5.0)
+  puma (~> 6.0)
   rails (~> 7.0.8, >= 7.0.8.1)
   selenium-webdriver
   sprockets-rails

@@ -1,0 +1,35 @@
+<% if matter.errors.any? %>
+  <div class="error-messages">
+    <strong><%= pluralize(matter.errors.count, "error") %> prevented this matter from being saved:</strong>
+    <ul>
+      <% matter.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="form-group">
+  <%= form.label :title %>
+  <%= form.text_field :title, placeholder: "Matter title" %>
+</div>
+
+<div class="form-group">
+  <%= form.label :matter_type, "Type" %>
+  <%= form.select :matter_type, Matter::MATTER_TYPES, { include_blank: "Select type" } %>
+</div>
+
+<div class="form-group">
+  <%= form.label :status %>
+  <%= form.select :status, Matter::STATUSES %>
+</div>
+
+<div class="form-group">
+  <%= form.label :due_date %>
+  <%= form.date_field :due_date %>
+</div>
+
+<div class="form-group">
+  <%= form.label :description %>
+  <%= form.text_area :description, placeholder: "Brief description of the matter…" %>
+</div>

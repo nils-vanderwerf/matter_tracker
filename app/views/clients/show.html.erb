@@ -1,0 +1,67 @@
+<div class="breadcrumb">
+  <%= link_to "Clients", clients_path %><span>/</span> <%= @client.name %>
+</div>
+
+<div class="page-header">
+  <h1><%= @client.name %></h1>
+  <div class="actions">
+    <%= link_to "Edit", edit_client_path(@client), class: "btn btn-secondary" %>
+    <%= button_to "Delete", @client, method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "Delete #{@client.name}?" } } %>
+  </div>
+</div>
+
+<div class="detail-card">
+  <div class="detail-grid">
+    <div class="detail-item">
+      <label>Email</label>
+      <p><%= @client.email.presence || "—" %></p>
+    </div>
+    <div class="detail-item">
+      <label>Phone</label>
+      <p><%= @client.phone.presence || "—" %></p>
+    </div>
+    <div class="detail-item full">
+      <label>Address</label>
+      <p><%= @client.address.presence || "—" %></p>
+    </div>
+  </div>
+</div>
+
+<div class="section-header">
+  <h2>Matters (<%= @matters.count %>)</h2>
+  <%= link_to "New Matter", new_client_matter_path(@client), class: "btn btn-primary btn-sm" %>
+</div>
+
+<% if @matters.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Due Date</th>
+        <th>Tasks</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @matters.each do |matter| %>
+        <tr>
+          <td><%= link_to matter.title, matter %></td>
+          <td><%= matter.matter_type %></td>
+          <td><span class="badge badge-<%= matter.status.downcase %>"><%= matter.status %></span></td>
+          <td><%= matter.due_date&.strftime("%d %b %Y") || "—" %></td>
+          <td><%= matter.tasks.count %></td>
+          <td>
+            <div class="actions">
+              <%= link_to "View", matter, class: "btn btn-secondary btn-sm" %>
+              <%= link_to "Edit", edit_matter_path(matter), class: "btn btn-secondary btn-sm" %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="empty">No matters for this client. <%= link_to "Add one", new_client_matter_path(@client) %>.</p>
+<% end %>
