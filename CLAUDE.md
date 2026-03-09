@@ -107,3 +107,4 @@ A timestamped note attached to a matter.
 | `matter_id` | integer | FK → matters, required |
 
 Associations: `belongs_to :matter`
+Routes: `create`, `destroy`, `edit`, `update` only (no index/show — notes are displayed inline on the matter show page)

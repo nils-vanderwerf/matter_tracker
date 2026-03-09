@@ -79,3 +79,29 @@
 <% else %>
   <p class="empty">No tasks yet. <%= link_to "Add one", new_matter_task_path(@matter) %>.</p>
 <% end %>
+
+<!-- Notes section -->
+<div class="section-header">
+  <h2>Notes</h2>
+</div>
+
+<% @matter.notes.order(created_at: :desc).each do |note| %>
+  <div class="detail-card">
+    <p><%= note.body %></p>
+    <small><%= note.created_at.strftime("%d %b %Y, %H:%M") %></small>
+    <div class="actions">
+      <%= link_to "Edit", edit_note_path(note), class: "btn btn-secondary btn-sm" %>
+      <%= button_to "Delete", note_path(note), method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Delete this note?" } } %>
+    </div>
+  </div>
+<% end %>
+
+<%= form_with model: [@matter, Note.new], class: "form-card" do |form| %>
+  <div class="form-group">
+    <%= form.label :body, "Add a note" %>
+    <%= form.text_area :body, placeholder: "Type your note here…" %>
+  </div>
+  <div class="form-actions">
+    <%= form.submit "Add Note", class: "btn btn-primary" %>
+  </div>
+<% end %>
