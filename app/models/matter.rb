@@ -8,6 +8,16 @@ class Matter < ApplicationRecord
   validates :title, presence: true
   validates :matter_type, inclusion: { in: MATTER_TYPES }
   validates :status, inclusion: { in: STATUSES }
+  validate :due_date_not_in_past, on: :create
+
+  private
+
+  def due_date_not_in_past
+    return if due_date.blank?
+    errors.add(:due_date, "must be today or in the future") if due_date < Date.today
+  end
+
+  public
 
   scope :open, -> { where(status: "Open") }
   scope :pending, -> { where(status: "Pending") }
