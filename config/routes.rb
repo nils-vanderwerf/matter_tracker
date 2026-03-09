@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  root "clients#index"
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  resources :clients do
+    resources :matters, shallow: true do
+      resources :tasks, shallow: true
+    end
+  end
 end

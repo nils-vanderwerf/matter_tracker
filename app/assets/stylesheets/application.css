@@ -1,15 +1,92 @@
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
  *= require_tree .
  *= require_self
  */
+
+/* Reset & Base */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; color: #1a1a1a; background: #f5f5f5; line-height: 1.5; }
+a { color: #2563eb; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Layout */
+.site-header { background: #1e3a5f; color: #fff; padding: 0 1.5rem; }
+.nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 52px; }
+.site-title { color: #fff; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.01em; }
+.site-title:hover { text-decoration: none; opacity: 0.85; }
+.nav-links a { color: #c8d8f0; font-size: 0.9rem; }
+.nav-links a:hover { color: #fff; text-decoration: none; }
+.container { max-width: 960px; margin: 2rem auto; padding: 0 1.5rem; }
+
+/* Flash */
+.flash { padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 1.25rem; font-size: 0.9rem; }
+.flash-notice { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
+.flash-alert  { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+/* Page header */
+.page-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.5rem; }
+.page-header h1 { font-size: 1.4rem; font-weight: 600; }
+
+/* Buttons */
+.btn { display: inline-block; padding: 0.45rem 1rem; border-radius: 4px; font-size: 0.875rem; font-weight: 500; cursor: pointer; border: 1px solid transparent; }
+.btn-primary { background: #2563eb; color: #fff; border-color: #2563eb; }
+.btn-primary:hover { background: #1d4ed8; text-decoration: none; color: #fff; }
+.btn-secondary { background: #fff; color: #374151; border-color: #d1d5db; }
+.btn-secondary:hover { background: #f9fafb; text-decoration: none; }
+.btn-danger { background: #fff; color: #dc2626; border-color: #fca5a5; }
+.btn-danger:hover { background: #fee2e2; text-decoration: none; }
+.btn-sm { padding: 0.3rem 0.7rem; font-size: 0.8rem; }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; }
+thead { background: #f9fafb; }
+th { text-align: left; padding: 0.65rem 1rem; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; border-bottom: 1px solid #e5e7eb; }
+td { padding: 0.75rem 1rem; border-bottom: 1px solid #f3f4f6; font-size: 0.9rem; vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #fafafa; }
+.actions { display: flex; gap: 0.5rem; }
+
+/* Detail view */
+.detail-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; padding: 1.5rem; margin-bottom: 1.5rem; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 2rem; }
+.detail-item label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; margin-bottom: 0.2rem; }
+.detail-item p { font-size: 0.95rem; }
+.detail-item.full { grid-column: 1 / -1; }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin: 1.75rem 0 0.75rem; }
+.section-header h2 { font-size: 1.05rem; font-weight: 600; }
+
+/* Badges */
+.badge { display: inline-block; padding: 0.2rem 0.55rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+.badge-open     { background: #d1fae5; color: #065f46; }
+.badge-pending  { background: #fef3c7; color: #92400e; }
+.badge-closed   { background: #f3f4f6; color: #4b5563; }
+.badge-high     { background: #fee2e2; color: #991b1b; }
+.badge-medium   { background: #fef3c7; color: #92400e; }
+.badge-low      { background: #f3f4f6; color: #4b5563; }
+.badge-in-progress { background: #dbeafe; color: #1e40af; }
+.badge-completed   { background: #d1fae5; color: #065f46; }
+
+/* Forms */
+.form-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; padding: 1.75rem; max-width: 600px; }
+.form-group { margin-bottom: 1.1rem; }
+.form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.35rem; color: #374151; }
+.form-group input[type=text],
+.form-group input[type=email],
+.form-group input[type=date],
+.form-group select,
+.form-group textarea { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.9rem; font-family: inherit; color: #1a1a1a; background: #fff; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+.form-group textarea { resize: vertical; min-height: 90px; }
+.form-actions { display: flex; gap: 0.75rem; align-items: center; margin-top: 1.5rem; }
+.field_with_errors input, .field_with_errors select, .field_with_errors textarea { border-color: #dc2626; }
+.error-messages { background: #fee2e2; border: 1px solid #fca5a5; border-radius: 4px; padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-size: 0.875rem; color: #991b1b; }
+.error-messages ul { padding-left: 1.25rem; }
+
+/* Breadcrumb */
+.breadcrumb { font-size: 0.85rem; color: #6b7280; margin-bottom: 1.25rem; }
+.breadcrumb a { color: #6b7280; }
+.breadcrumb a:hover { color: #2563eb; }
+.breadcrumb span { margin: 0 0.4rem; }
+
+/* Empty state */
+.empty { color: #9ca3af; font-size: 0.9rem; padding: 1.5rem 0; }

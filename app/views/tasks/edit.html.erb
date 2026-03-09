@@ -1,0 +1,24 @@
+<% matter = @matter || @task.matter %>
+
+<div class="breadcrumb">
+  <%= link_to "Clients", clients_path %><span>/</span>
+  <% if matter.client %>
+    <%= link_to matter.client.name, matter.client %><span>/</span>
+  <% end %>
+  <%= link_to matter.title, matter %><span>/</span>
+  <%= link_to @task.title, @task %><span>/</span> Edit
+</div>
+
+<div class="page-header">
+  <h1>Edit Task</h1>
+</div>
+
+<div class="form-card">
+  <%= form_with model: @task do |form| %>
+    <%= render "form", form: form, task: @task %>
+    <div class="form-actions">
+      <%= form.submit "Save Changes", class: "btn btn-primary" %>
+      <%= link_to "Cancel", @task, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>

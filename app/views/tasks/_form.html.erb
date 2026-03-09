@@ -1,0 +1,35 @@
+<% if task.errors.any? %>
+  <div class="error-messages">
+    <strong><%= pluralize(task.errors.count, "error") %> prevented this task from being saved:</strong>
+    <ul>
+      <% task.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="form-group">
+  <%= form.label :title %>
+  <%= form.text_field :title, placeholder: "Task title" %>
+</div>
+
+<div class="form-group">
+  <%= form.label :priority %>
+  <%= form.select :priority, Task::PRIORITIES %>
+</div>
+
+<div class="form-group">
+  <%= form.label :status %>
+  <%= form.select :status, Task::STATUSES %>
+</div>
+
+<div class="form-group">
+  <%= form.label :due_date %>
+  <%= form.date_field :due_date %>
+</div>
+
+<div class="form-group">
+  <%= form.label :description %>
+  <%= form.text_area :description, placeholder: "Details about this task…" %>
+</div>

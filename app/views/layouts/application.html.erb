@@ -1,15 +1,29 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>MatterTracker</title>
+    <title>Matter Tracker</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag "application" %>
   </head>
 
   <body>
-    <%= yield %>
+    <header class="site-header">
+      <nav class="nav-inner">
+        <a class="site-title" href="<%= root_path %>">Matter Tracker</a>
+        <div class="nav-links">
+          <%= link_to "Clients", clients_path %>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container">
+      <% flash.each do |type, message| %>
+        <div class="flash flash-<%= type %>"><%= message %></div>
+      <% end %>
+
+      <%= yield %>
+    </main>
   </body>
 </html>

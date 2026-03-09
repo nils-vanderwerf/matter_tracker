@@ -45,3 +45,53 @@ bundle exec rails db:migrate
 - `db/migrations/` — database migrations
 - `test/` — Minitest test files
 - `config/routes.rb` — route definitions
+
+## Models
+
+### Matter (`app/models/matter.rb`)
+Represents a legal matter being tracked.
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `title` | string | Required |
+| `client` | string | Legacy string field (see `client_id`) |
+| `matter_type` | string | One of: Family Law, Criminal, Conveyancing, Commercial |
+| `status` | string | One of: Open, Pending, Closed (default: Open) |
+| `due_date` | date | Optional |
+| `description` | text | Optional |
+| `client_id` | integer | FK → clients |
+
+Associations: `belongs_to :client` (optional), `has_many :tasks`
+Scopes: `open`, `pending`, `closed`, `by_due_date`
+
+---
+
+### Client (`app/models/client.rb`)
+A person or entity being represented.
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `name` | string | Required |
+| `email` | string | Optional, validated format |
+| `phone` | string | Optional |
+| `address` | text | Optional |
+
+Associations: `has_many :matters`
+Scopes: `alphabetical`
+
+---
+
+### Task (`app/models/task.rb`)
+A task or action item associated with a matter.
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `title` | string | Required |
+| `description` | text | Optional |
+| `due_date` | date | Optional |
+| `status` | string | One of: Pending, In Progress, Completed (default: Pending) |
+| `priority` | string | One of: Low, Medium, High (default: Medium) |
+| `matter_id` | integer | Foreign Key → matters, required |
+
+Associations: `belongs_to :matter`
+Scopes: `pending`, `in_progress`, `completed`, `by_due_date`, `high_priority`

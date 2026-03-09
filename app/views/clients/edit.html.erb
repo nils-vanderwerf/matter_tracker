@@ -1,0 +1,18 @@
+<div class="breadcrumb">
+  <%= link_to "Clients", clients_path %><span>/</span>
+  <%= link_to @client.name, @client %><span>/</span> Edit
+</div>
+
+<div class="page-header">
+  <h1>Edit Client</h1>
+</div>
+
+<div class="form-card">
+  <%= form_with model: @client do |form| %>
+    <%= render "form", form: form, client: @client %>
+    <div class="form-actions">
+      <%= form.submit "Save Changes", class: "btn btn-primary" %>
+      <%= link_to "Cancel", @client, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>
