@@ -1,12 +1,28 @@
 # Matter Tracker
 
-A Rails 7 application for tracking legal matters, tasks, and deadlines.
+I'm applying for a role at [Clio](https://www.clio.com/au/) — legal practice management software — and wanted to show up with more than a CV. So I built this: a stripped-back version of what Clio does, just to prove I understand the domain and can put together a real Rails app.
 
-## Requirements
+It's a CRUD app for tracking legal matters. Clients have matters (cases), matters have tasks and notes, everything has a status and a due date. Not reinventing the wheel — just demonstrating I can work with the same basic concepts Clio is built around.
 
-- Ruby 3.x
-- Bundler
-- SQLite3
+Built with the help of [Claude Code](https://claude.ai/code), Anthropic's AI coding tool, which I used as a pair programmer throughout — writing code alongside it, reviewing what it produced, and guiding it when it went off track.
+
+---
+
+## What it does
+
+- **Clients** — create and manage clients
+- **Matters** — track legal matters by type, status, and due date
+- **Tasks** — attach tasks to matters with priority and status
+- **Notes** — add notes to any matter, displayed inline
+
+## Data Model
+
+```
+Client → has many Matters
+Matter → belongs to Client, has many Tasks, has many Notes
+Task   → belongs to Matter
+Note   → belongs to Matter
+```
 
 ## Setup
 
@@ -20,22 +36,19 @@ rails server
 
 Visit `http://localhost:3000`
 
-## Running Tests
+## Tests
 
 ```bash
-bundle exec rails test
+bundle exec rspec
 ```
 
-## Tech Stack
+## Stack
 
-- **Rails 7.0** (no JavaScript bundler)
-- **SQLite3** for the database
-- **Sprockets** for asset pipeline
-- **Minitest** for testing
+- Rails 7.0 with SQLite3
+- RSpec + FactoryBot for testing
+- Shallow nested routes
+- Hotwire/Turbo (no JS framework)
 
-## Development Notes
+## What's missing (intentionally)
 
-- Generate models: `rails g model <Name> <field>:<type>`
-- Generate controllers: `rails g controller <Name> <actions>`
-- Always run `rails db:migrate` after generating migrations
-- Routes defined in `config/routes.rb`
+This is a proof-of-concept, not a production app. The obvious next steps would be authentication, time tracking, document uploads, and a proper calendar view — all things Clio does well.

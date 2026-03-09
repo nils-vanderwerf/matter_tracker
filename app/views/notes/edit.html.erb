@@ -1,9 +1,9 @@
 <div class="breadcrumb">
   <%= link_to "Clients", clients_path %><span>/</span>
   <% if @note.matter.client %>
-    <%= link_to @note.matter.client, @note.matter.client %><span>/</span>
+    <%= link_to @note.matter.client.name, @note.matter.client %><span>/</span>
   <% end %>
-  <%= link_to @note.matter, @note.matter %><span>/</span> Edit
+  <%= link_to @note.matter.title, @note.matter %><span>/</span> Edit
 </div>
 
 <div class="page-header">
@@ -12,8 +12,10 @@
 
 <div class="form-card">
   <%= form_with model: @note do |form| %>
-    <%= form.label :body %>
-    <%= form.text_area :body %>
+    <div class="form-group">
+      <%= form.label :body, "Note" %>
+      <%= form.text_area :body, placeholder: "Type your note here…" %>
+    </div>
     <div class="form-actions">
       <%= form.submit "Save Changes", class: "btn btn-primary" %>
       <%= link_to "Cancel", @note.matter, class: "btn btn-secondary" %>
