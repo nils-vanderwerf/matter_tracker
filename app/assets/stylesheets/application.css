@@ -41,6 +41,9 @@ a:hover { text-decoration: underline; }
 table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; }
 thead { background: #f9fafb; }
 th { text-align: left; padding: 0.65rem 1rem; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; border-bottom: 1px solid #e5e7eb; }
+th a { color: #6b7280; text-decoration: none; }
+th a:hover { color: #374151; text-decoration: none; }
+th a.sort-active { color: #2563eb; }
 td { padding: 0.75rem 1rem; border-bottom: 1px solid #f3f4f6; font-size: 0.9rem; vertical-align: middle; }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: #fafafa; }
@@ -73,6 +76,11 @@ tr:hover td { background: #fafafa; }
 .stat-label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; margin-top: 0.4rem; }
 .stat-card-danger  .stat-value { color: #dc2626; }
 .stat-card-warning .stat-value { color: #d97706; }
+.filter-bar { background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; padding: 0.75rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+.filter-group { display: flex; align-items: center; gap: 0.4rem; }
+.filter-group label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; }
+.filter-group select { padding: 0.3rem 0.6rem; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.875rem; color: #374151; background: #fff; }
+.filter-active { font-size: 0.75rem; background: #dbeafe; color: #1e40af; padding: 0.15rem 0.5rem; border-radius: 10px; font-weight: 500; margin-left: 0.4rem; }
 
 /* Status history */
 .status-history { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.5rem; }
