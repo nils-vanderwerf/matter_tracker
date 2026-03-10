@@ -83,4 +83,57 @@ RSpec.describe "Matters", type: :request do
       expect(response).to redirect_to(client_url(client))
     end
   end
+
+  describe "PATCH /matters/:id/close" do
+    context "when the matter is open" do
+      it "closes the matter and redirects" do
+        patch close_matter_path(matter)
+        expect(response).to redirect_to(matter_path(matter))
+        expect(matter.reload.status).to eq("Closed")
+      end
+
+      it "records a status change" do
+        expect {
+          patch close_matter_path(matter)
+        }.to change { matter.status_changes.count }.by(1)
+        expect(matter.status_changes.last.status).to eq("Closed")
+      end
+    end
+
+    context "when the matter is already closed" do
+      it "redirects with an alert" do
+        matter.close
+        patch close_matter_path(matter)
+        expect(response).to redirect_to(matter_path(matter))
+        expect(flash[:alert]).to eq("Matter is already closed.")
+      end
+    end
+  end
+
+  describe "PATCH /matters/:id/reopen" do
+    context "when the matter is closed" do
+      it "reopens the matter and redirects" do
+        matter.close
+        patch reopen_matter_path(matter)
+        expect(response).to redirect_to(matter_path(matter))
+        expect(matter.reload.status).to eq("Open")
+      end
+
+      it "records a status change" do
+        matter.close
+        expect {
+          patch reopen_matter_path(matter)
+        }.to change { matter.status_changes.count }.by(1)
+        expect(matter.status_changes.last.status).to eq("Open")
+      end
+    end
+
+    context "when the matter is not closed" do
+      it "redirects with an alert" do
+        patch reopen_matter_path(matter)
+        expect(response).to redirect_to(matter_path(matter))
+        expect(flash[:alert]).to eq("Matter is not closed.")
+      end
+    end
+  end
 end

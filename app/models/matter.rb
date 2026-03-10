@@ -29,6 +29,10 @@ class Matter < ApplicationRecord
     status == "Closed"
   end
 
+  def overdue?
+    !closed? && due_date.present? && due_date < Date.today
+  end
+
   private
 
   def record_initial_status

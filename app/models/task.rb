@@ -8,6 +8,10 @@ class Task < ApplicationRecord
   validates :status, inclusion: { in: STATUSES }
   validates :priority, inclusion: { in: PRIORITIES }
 
+  def overdue?
+    status != "Completed" && due_date.present? && due_date < Date.today
+  end
+
   scope :pending, -> { where(status: "Pending") }
   scope :in_progress, -> { where(status: "In Progress") }
   scope :completed, -> { where(status: "Completed") }

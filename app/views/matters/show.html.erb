@@ -9,7 +9,12 @@
 <div class="page-header">
   <div>
     <h1><%= @matter.title %></h1>
-    <% if @matter.closed? %>
+    <% if @matter.overdue? %>
+      <p class="overdue-notice">
+        <span class="badge badge-overdue">Overdue</span>
+        was due <%= @matter.due_date.strftime("%d %b %Y") %>
+      </p>
+    <% elsif @matter.closed? %>
       <p style="color: #888; margin: 0; font-size: 0.9em;">This case has been closed.</p>
     <% end %>
   </div>
@@ -45,7 +50,9 @@
     </div>
     <div class="detail-item">
       <label>Due Date</label>
-      <p><%= @matter.due_date&.strftime("%d %B %Y") || "—" %></p>
+      <p <% if @matter.overdue? %>style="color: #dc2626; font-weight: 500;"<% end %>>
+        <%= @matter.due_date&.strftime("%d %B %Y") || "—" %>
+      </p>
     </div>
     <div class="detail-item full">
       <label>Description</label>
@@ -91,7 +98,7 @@
             <% css = task.status == "In Progress" ? "in-progress" : task.status.downcase %>
             <span class="badge badge-<%= css %>"><%= task.status %></span>
           </td>
-          <td><%= task.due_date&.strftime("%d %b %Y") || "—" %></td>
+          <td style="<%= "color: #dc2626; font-weight: 500;" if task.overdue? %>"><%= task.due_date&.strftime("%d %b %Y") || "—" %></td>
           <td>
             <div class="actions">
               <%= link_to "View", task, class: "btn btn-secondary btn-sm" %>

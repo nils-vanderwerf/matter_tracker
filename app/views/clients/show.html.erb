@@ -50,7 +50,7 @@
           <td><%= link_to matter.title, matter %></td>
           <td><%= matter.matter_type %></td>
           <td><span class="badge badge-<%= matter.status.downcase %>"><%= matter.status %></span></td>
-          <td><%= matter.due_date&.strftime("%d %b %Y") || "—" %></td>
+          <td style="<%= "color: #dc2626; font-weight: 500;" if matter.overdue? %>"><%= matter.due_date&.strftime("%d %b %Y") || "—" %></td>
           <td><%= matter.tasks.size %></td>
           <td>
             <div class="actions">

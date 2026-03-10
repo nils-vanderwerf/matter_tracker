@@ -11,7 +11,15 @@
 </div>
 
 <div class="page-header">
-  <h1><%= @task.title %></h1>
+  <div>
+    <h1><%= @task.title %></h1>
+    <% if @task.overdue? %>
+      <p class="overdue-notice">
+        <span class="badge badge-overdue">Overdue</span>
+        was due <%= @task.due_date.strftime("%d %b %Y") %>
+      </p>
+    <% end %>
+  </div>
   <div class="actions">
     <%= link_to "Edit", edit_task_path(@task), class: "btn btn-secondary" %>
     <%= button_to "Delete", @task, method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "Delete this task?" } } %>
@@ -35,7 +43,9 @@
     </div>
     <div class="detail-item">
       <label>Due Date</label>
-      <p><%= @task.due_date&.strftime("%d %B %Y") || "—" %></p>
+      <p <% if @task.overdue? %>style="color: #dc2626; font-weight: 500;"<% end %>>
+        <%= @task.due_date&.strftime("%d %B %Y") || "—" %>
+      </p>
     </div>
     <div class="detail-item full">
       <label>Description</label>
