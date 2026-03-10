@@ -136,9 +136,13 @@ Never created manually — driven entirely by `Matter` callbacks.
 
 ## Dashboard (`app/controllers/dashboard_controller.rb`)
 Root page (`/`). Displays:
-- **Stat cards**: Open Matters, Pending Matters, Overdue Matters, Overdue Tasks
-- **Overdue Matters table**: matters not closed with `due_date < today`, ordered by due date
+- **Stat cards**: Open Matters, Pending Matters, Overdue Matters, Overdue Tasks (always global, unaffected by filters)
+- **Overdue Matters table**: matters not closed with `due_date < today`
 - **Upcoming Deadlines table**: open/pending matters due within 14 days
-- **High Priority Tasks table**: incomplete High priority tasks, with past due dates highlighted red
+- **High Priority Tasks table**: incomplete High priority tasks, past due dates highlighted red
 
-All queries use `includes` to avoid N+1 loads.
+**Filtering**: `matter_type` param filters both matter tables; `task_status` param filters the tasks table.
+
+**Sorting**: all columns sortable via `matters_sort`/`matters_dir` and `tasks_sort`/`tasks_dir` params. Column map is whitelisted in `MATTER_SORT_COLUMNS` / `TASK_SORT_COLUMNS` to prevent SQL injection. Sort state is preserved in the URL alongside filter params. Helper: `DashboardHelper#sort_link`.
+
+All queries use `includes` (or `eager_load` when sorting by an association column) to avoid N+1 loads.

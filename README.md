@@ -10,7 +10,7 @@ Built with the help of [Claude Code](https://claude.ai/code), Anthropic's AI cod
 
 ## What it does
 
-- **Dashboard** — overdue matters, upcoming deadlines, high-priority tasks, and key stats at a glance
+- **Dashboard** — overdue matters, upcoming deadlines, high-priority tasks, and key stats; filterable by matter type and task status, all columns sortable
 - **Clients** — create and manage clients
 - **Matters** — track legal matters by type, status, and due date; close and reopen with full status history
 - **Tasks** — attach tasks to matters with priority and status
