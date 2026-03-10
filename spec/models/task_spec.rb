@@ -42,6 +42,28 @@ RSpec.describe Task, type: :model do
     end
   end
 
+  describe "#overdue?" do
+    it "returns true for an incomplete task with a past due date" do
+      task = create(:task, matter: matter, status: "Pending", due_date: Date.today - 1)
+      expect(task.overdue?).to be true
+    end
+
+    it "returns false for a completed task with a past due date" do
+      task = create(:task, matter: matter, status: "Completed", due_date: Date.today - 1)
+      expect(task.overdue?).to be false
+    end
+
+    it "returns false when due date is in the future" do
+      task = create(:task, matter: matter, status: "Pending", due_date: Date.today + 7)
+      expect(task.overdue?).to be false
+    end
+
+    it "returns false when due date is nil" do
+      task = create(:task, matter: matter, status: "Pending", due_date: nil)
+      expect(task.overdue?).to be false
+    end
+  end
+
   describe "scopes" do
     describe "status" do
       it "returns only pending tasks" do

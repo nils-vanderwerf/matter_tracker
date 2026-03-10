@@ -8,6 +8,11 @@ RSpec.describe Note, type: :model do
     expect(note).to be_valid
   end
 
+  it "is invalid without a body" do
+    note = build(:note, matter: matter, body: "")
+    expect(note).not_to be_valid
+  end
+
   it "belongs to its matter" do
     expect(note.matter).to eq(matter)
   end

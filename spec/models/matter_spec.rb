@@ -50,6 +50,48 @@ RSpec.describe Matter, type: :model do
     end
   end
 
+  describe "validations" do
+    it "is invalid without a title" do
+      matter = build(:matter, title: "")
+      expect(matter).not_to be_valid
+    end
+
+    it "is invalid with an unrecognised matter_type" do
+      matter = build(:matter, matter_type: "Piracy")
+      expect(matter).not_to be_valid
+    end
+
+    it "is invalid with an unrecognised status" do
+      matter = build(:matter, status: "Limbo")
+      expect(matter).not_to be_valid
+    end
+  end
+
+  describe "#overdue?" do
+    it "returns true for an open matter with a past due date" do
+      matter = create(:matter, status: "Open")
+      matter.update_column(:due_date, Date.today - 1)
+      expect(matter.overdue?).to be true
+    end
+
+    it "returns false for a closed matter with a past due date" do
+      matter = create(:matter, status: "Open")
+      matter.update_column(:due_date, Date.today - 1)
+      matter.close
+      expect(matter.overdue?).to be false
+    end
+
+    it "returns false when due date is in the future" do
+      matter = create(:matter, status: "Open", due_date: Date.today + 7)
+      expect(matter.overdue?).to be false
+    end
+
+    it "returns false when due date is nil" do
+      matter = create(:matter, status: "Open", due_date: nil)
+      expect(matter.overdue?).to be false
+    end
+  end
+
   describe ".overdue" do
     # Matters become overdue over time — create with a valid date then backdate via
     # update_column to reflect real-world progression without triggering the on: :create validation.
