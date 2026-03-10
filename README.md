@@ -10,11 +10,40 @@ Built with the help of [Claude Code](https://claude.ai/code), Anthropic's AI cod
 
 ## What it does
 
-- **Dashboard** — overdue matters, upcoming deadlines, high-priority tasks, and key stats; filterable by matter type and task status, all columns sortable
-- **Clients** — create and manage clients
-- **Matters** — track legal matters by type, status, and due date; close and reopen with full status history
-- **Tasks** — attach tasks to matters with priority and status
+- **Dashboard** — stat cards (open/pending/closed matters, overdue task count), overdue matters, upcoming deadlines, and high-priority tasks; filterable by matter type and task status, all columns sortable
+- **Clients** — create and manage clients; overdue matter due dates highlighted on the client page
+- **Matters** — track legal matters by type, status, and due date; close and reopen with full status history; overdue badge shown when past due and still open
+- **Tasks** — attach tasks to matters with priority and status; overdue indicator on past-due incomplete tasks
 - **Notes** — add notes to any matter, displayed inline
+
+## Screenshots
+
+<!--
+  HOW TO ADD SCREENSHOTS:
+  1. Take your screenshots and save them into a /screenshots folder in the repo root
+  2. Replace each placeholder below with the actual image path
+  3. Syntax: ![Alt text](screenshots/your-file.png)
+
+  WHAT TO CAPTURE:
+  - Dashboard with seed data loaded (shows stat cards + all three tables)
+  - A matter show page — ideally one that's overdue (shows the red badge + status history)
+  - A client show page — shows the matters table with an overdue date in red
+  - Optional: the filter bar in use (matter_type selected, filtered results showing)
+-->
+
+**Dashboard**
+![Dashboard](screenshots/dashboard.png)
+
+**Client page**
+![Client page](screenshots/client_show.png)
+
+**Matter detail**
+![Matter detail](screenshots/matter_show.png)
+
+**Editing a note**
+![Editing a note](screenshots/notes_edit.png)
+
+---
 
 ## Data Model
 
@@ -23,7 +52,22 @@ Client             → has many Matters
 Matter             → belongs to Client, has many Tasks, has many Notes, has many MatterStatusChanges
 Task               → belongs to Matter
 Note               → belongs to Matter
-MatterStatusChange → belongs to Matter (audit log, created automatically on status change)
+MatterStatusChange → belongs to Matter (audit log, written automatically on every status change)
+```
+
+## How data flows through the app
+
+Rails uses the MVC pattern — every request passes through three layers:
+
+- **Routes** (`config/routes.rb`) — maps a URL + HTTP verb to a controller action. `POST /clients/21/matters` → `MattersController#create`
+- **Controller** — receives the request, talks to the model to read or write data, then sends a response (renders a view or redirects)
+- **Model** — the Ruby class that wraps the database table. Handles validations, associations, and business logic (e.g. the `close` method, status change callbacks)
+- **View** — an ERB template that takes the data the controller prepared and renders HTML back to the browser
+
+```
+Browser → Routes → Controller → Model ↔ Database
+                       ↓
+                     View → Browser
 ```
 
 ## Setup
@@ -32,7 +76,7 @@ MatterStatusChange → belongs to Matter (audit log, created automatically on st
 git clone <repo-url>
 cd matter_tracker
 bundle install
-rails db:create db:migrate
+rails db:create db:migrate db:seed
 rails server
 ```
 

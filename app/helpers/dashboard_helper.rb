@@ -1,6 +1,7 @@
 module DashboardHelper
   # Renders a sortable column header link.
   # Clicking the active column toggles asc/desc; clicking a new column defaults to asc.
+  # Preserves existing filter params in the URL so sorting doesn't wipe active filters.
   def sort_link(label, column, table:, current_sort:, current_dir:)
     active    = current_sort == column
     next_dir  = (active && current_dir == "asc") ? "desc" : "asc"
