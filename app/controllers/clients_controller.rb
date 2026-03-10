@@ -2,11 +2,11 @@ class ClientsController < ApplicationController
   before_action :set_client, only: [:show, :edit, :update, :destroy]
 
   def index
-    @clients = Client.alphabetical.includes(:matters) # fixes n + 1
+    @clients = Client.alphabetical.includes(:matters)
   end
 
   def show
-    @matters = @client.matters.by_due_date
+    @matters = @client.matters.by_due_date.includes(:tasks)
   end
 
   def new
