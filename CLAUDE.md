@@ -12,7 +12,7 @@ A Rails 7 application for tracking legal matters, tasks, and deadlines.
 - Keep controllers thin — business logic belongs in models or service objects
 - Use `before_action` for shared logic in controllers
 - Prefer `scope` over class methods on models for query logic
-- Write tests in `test/` using Minitest (default Rails)
+- Write tests with RSpec + FactoryBot (specs in `spec/`)
 
 ## Git Commit Conventions
 - Each commit should represent one logical part of the build (e.g. a feature, a model, a set of specs)
@@ -29,7 +29,7 @@ bundle exec rails server
 
 ## Running Tests
 ```bash
-bundle exec rails test
+bundle exec rspec
 ```
 
 ## Generating Resources
@@ -48,8 +48,9 @@ bundle exec rails db:migrate
 - `app/models/` — ActiveRecord models
 - `app/controllers/` — RESTful controllers
 - `app/views/` — ERB templates
-- `db/migrations/` — database migrations
-- `test/` — Minitest test files
+- `db/migrate/` — database migrations
+- `spec/` — RSpec specs (models in `spec/models/`, request specs in `spec/controllers/`)
+- `spec/factories/` — FactoryBot factories
 - `config/routes.rb` — route definitions
 
 ## Models
@@ -67,8 +68,10 @@ Represents a legal matter being tracked.
 | `description` | text | Optional |
 | `client_id` | integer | FK → clients |
 
-Associations: `belongs_to :client` (optional), `has_many :tasks`, `has_many :notes`
-Scopes: `open`, `pending`, `closed`, `by_due_date`
+Associations: `belongs_to :client` (optional), `has_many :tasks`, `has_many :notes`, `has_many :status_changes`
+Scopes: `open`, `pending`, `closed`, `overdue`, `by_due_date`
+Methods: `close`, `reopen`, `closed?`
+Callbacks: records initial status on create; records a `MatterStatusChange` whenever `status` changes
 
 ---
 
@@ -100,7 +103,7 @@ A task or action item associated with a matter.
 | `matter_id` | integer | Foreign Key → matters, required |
 
 Associations: `belongs_to :matter`
-Scopes: `pending`, `in_progress`, `completed`, `by_due_date`, `high_priority`
+Scopes: `pending`, `in_progress`, `completed`, `by_due_date`, `high_priority`, `overdue`
 
 ---
 
@@ -114,3 +117,28 @@ A timestamped note attached to a matter.
 
 Associations: `belongs_to :matter`
 Routes: `create`, `destroy`, `edit`, `update` only (no index/show — notes are displayed inline on the matter show page)
+
+---
+
+### MatterStatusChange (`app/models/matter_status_change.rb`)
+An audit record created automatically whenever a matter's status changes.
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `status` | string | The new status value at time of change |
+| `matter_id` | integer | FK → matters |
+| `created_at` | datetime | When the change occurred |
+
+Associations: `belongs_to :matter`
+Never created manually — driven entirely by `Matter` callbacks.
+
+---
+
+## Dashboard (`app/controllers/dashboard_controller.rb`)
+Root page (`/`). Displays:
+- **Stat cards**: Open Matters, Pending Matters, Overdue Matters, Overdue Tasks
+- **Overdue Matters table**: matters not closed with `due_date < today`, ordered by due date
+- **Upcoming Deadlines table**: open/pending matters due within 14 days
+- **High Priority Tasks table**: incomplete High priority tasks, with past due dates highlighted red
+
+All queries use `includes` to avoid N+1 loads.

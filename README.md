@@ -10,18 +10,20 @@ Built with the help of [Claude Code](https://claude.ai/code), Anthropic's AI cod
 
 ## What it does
 
+- **Dashboard** — overdue matters, upcoming deadlines, high-priority tasks, and key stats at a glance
 - **Clients** — create and manage clients
-- **Matters** — track legal matters by type, status, and due date
+- **Matters** — track legal matters by type, status, and due date; close and reopen with full status history
 - **Tasks** — attach tasks to matters with priority and status
 - **Notes** — add notes to any matter, displayed inline
 
 ## Data Model
 
 ```
-Client → has many Matters
-Matter → belongs to Client, has many Tasks, has many Notes
-Task   → belongs to Matter
-Note   → belongs to Matter
+Client             → has many Matters
+Matter             → belongs to Client, has many Tasks, has many Notes, has many MatterStatusChanges
+Task               → belongs to Matter
+Note               → belongs to Matter
+MatterStatusChange → belongs to Matter (audit log, created automatically on status change)
 ```
 
 ## Setup
