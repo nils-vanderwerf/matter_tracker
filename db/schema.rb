@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_03_09_013730) do
+ActiveRecord::Schema[7.0].define(version: 2026_03_10_035828) do
   create_table "clients", force: :cascade do |t|
     t.string "name", null: false
     t.string "email"
@@ -18,6 +18,14 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_09_013730) do
     t.text "address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "matter_status_changes", force: :cascade do |t|
+    t.integer "matter_id", null: false
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["matter_id"], name: "index_matter_status_changes_on_matter_id"
   end
 
   create_table "matters", force: :cascade do |t|
@@ -53,6 +61,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_09_013730) do
     t.index ["matter_id"], name: "index_tasks_on_matter_id"
   end
 
+  add_foreign_key "matter_status_changes", "matters"
   add_foreign_key "matters", "clients"
   add_foreign_key "notes", "matters"
   add_foreign_key "tasks", "matters"
