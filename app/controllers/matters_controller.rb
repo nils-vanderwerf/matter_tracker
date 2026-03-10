@@ -1,10 +1,11 @@
 class MattersController < ApplicationController
   before_action :set_client, only: [:new, :create]
-  before_action :set_matter, only: [:show, :edit, :update, :destroy]
+  before_action :set_matter, only: [:show, :edit, :update, :destroy, :close, :reopen]
 
   def show
     @tasks = @matter.tasks.by_due_date
     @client = @matter.client
+    @last_status_change = @matter.status_changes.order(created_at: :asc).last
   end
 
   def new
@@ -30,6 +31,22 @@ class MattersController < ApplicationController
     else
       @client = @matter.client
       render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def close
+    if @matter.close
+      redirect_to @matter, notice: "Matter closed."
+    else
+      redirect_to @matter, alert: "Matter is already closed."
+    end
+  end
+
+  def reopen
+    if @matter.reopen
+      redirect_to @matter, notice: "Matter reopened."
+    else
+      redirect_to @matter, alert: "Matter is not closed."
     end
   end
 

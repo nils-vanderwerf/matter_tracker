@@ -7,10 +7,20 @@
 </div>
 
 <div class="page-header">
-  <h1><%= @matter.title %></h1>
+  <div>
+    <h1><%= @matter.title %></h1>
+    <% if @matter.closed? %>
+      <p style="color: #888; margin: 0; font-size: 0.9em;">This case has been closed.</p>
+    <% end %>
+  </div>
   <div class="actions">
-    <%= link_to "Edit", edit_matter_path(@matter), class: "btn btn-secondary" %>
-    <%= button_to "Delete", @matter, method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "Delete this matter?" } } %>
+    <% if @matter.closed? %>
+      <%= button_to "Reopen", reopen_matter_path(@matter), method: :patch, class: "btn btn-secondary", form: { onsubmit: "return confirm('Reopen this matter?')" } %>
+    <% else %>
+      <%= link_to "Edit", edit_matter_path(@matter), class: "btn btn-secondary" %>
+      <%= button_to "Close Matter", close_matter_path(@matter), method: :patch, class: "btn btn-primary", form: { onsubmit: "return confirm('Close this matter?')" } %>
+      <%= button_to "Delete", @matter, method: :delete, class: "btn btn-danger", form: { onsubmit: "return confirm('Delete this matter?')" } %>
+    <% end %>
   </div>
 </div>
 
@@ -26,7 +36,12 @@
     </div>
     <div class="detail-item">
       <label>Status</label>
-      <p><span class="badge badge-<%= @matter.status.downcase %>"><%= @matter.status %></span></p>
+      <p>
+        <span class="badge badge-<%= @matter.status.downcase %>"><%= @matter.status %></span>
+        <% if @last_status_change %>
+          <span style="color: #888; font-size: 0.8em; margin-left: 0.4rem;">since <%= @last_status_change.created_at.strftime("%d %b %Y") %></span>
+        <% end %>
+      </p>
     </div>
     <div class="detail-item">
       <label>Due Date</label>
@@ -37,6 +52,18 @@
       <p><%= @matter.description.presence || "—" %></p>
     </div>
   </div>
+</div>
+
+<div class="section-header">
+  <h2>Status History</h2>
+</div>
+<div class="status-history">
+  <% @matter.status_changes.order(created_at: :asc).each do |change| %>
+    <div class="status-history-item">
+      <span class="status-history-label"><%= change.status %></span>
+      <span class="status-history-date"><%= change.created_at.strftime("%d %b %Y, %H:%M") %></span>
+    </div>
+  <% end %>
 </div>
 
 <div class="section-header">
@@ -69,7 +96,7 @@
             <div class="actions">
               <%= link_to "View", task, class: "btn btn-secondary btn-sm" %>
               <%= link_to "Edit", edit_task_path(task), class: "btn btn-secondary btn-sm" %>
-              <%= button_to "Delete", task, method: :delete, class: "btn btn-danger btn-sm", form: { style: "display: contents", data: { turbo_confirm: "Delete this task?" } } %>
+              <%= button_to "Delete", task, method: :delete, class: "btn btn-danger btn-sm", form: { style: "display: contents", onsubmit: "return confirm('Delete this task?')" } %>
             </div>
           </td>
         </tr>
@@ -94,10 +121,10 @@
     </div>
     <div class="actions" style="display: flex; align-items: center; gap: 8px;">
       <%= link_to "Edit", edit_note_path(note), class: "btn btn-secondary btn-sm" %>
-      <%= button_to "Delete", note_path(note), method: :delete, class: "btn btn-danger btn-sm", 
-          form: { 
+      <%= button_to "Delete", note_path(note), method: :delete, class: "btn btn-danger btn-sm",
+          form: {
             style: "display: contents;",
-            data: { turbo_confirm: "Delete this note?" } 
+            onsubmit: "return confirm('Delete this note?')"
           } %>
     </div>
   </div>
