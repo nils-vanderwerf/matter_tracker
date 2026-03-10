@@ -20,7 +20,7 @@
           <td><%= link_to client.name, client %></td>
           <td><%= client.email.presence || "—" %></td>
           <td><%= client.phone.presence || "—" %></td>
-          <td><%= client.matters.count %></td>
+          <td><%= client.matters.size %></td>
           <td>
             <div class="actions">
               <%= link_to "View", client, class: "btn btn-secondary btn-sm" %>
