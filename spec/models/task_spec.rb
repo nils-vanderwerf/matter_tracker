@@ -63,5 +63,32 @@ RSpec.describe Task, type: :model do
         expect(Task.high_priority).to eq([eating_pizza])
       end
     end
+
+    describe ".overdue" do
+      it "includes incomplete tasks with a past due date" do
+        task = create(:task, matter: matter, status: "Pending", due_date: Date.today - 1)
+        expect(Task.overdue).to include(task)
+      end
+
+      it "includes in-progress tasks with a past due date" do
+        task = create(:task, matter: matter, status: "In Progress", due_date: Date.today - 1)
+        expect(Task.overdue).to include(task)
+      end
+
+      it "excludes completed tasks even with a past due date" do
+        task = create(:task, matter: matter, status: "Completed", due_date: Date.today - 1)
+        expect(Task.overdue).not_to include(task)
+      end
+
+      it "excludes tasks with a future due date" do
+        task = create(:task, matter: matter, status: "Pending", due_date: Date.today + 7)
+        expect(Task.overdue).not_to include(task)
+      end
+
+      it "excludes tasks with no due date" do
+        task = create(:task, matter: matter, status: "Pending", due_date: nil)
+        expect(Task.overdue).not_to include(task)
+      end
+    end
   end
 end

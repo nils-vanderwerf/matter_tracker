@@ -1,0 +1,120 @@
+<div class="page-header">
+  <h1>Dashboard</h1>
+</div>
+
+<div class="stat-cards">
+  <div class="stat-card">
+    <div class="stat-value"><%= @open_count %></div>
+    <div class="stat-label">Open Matters</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value"><%= @pending_count %></div>
+    <div class="stat-label">Pending Matters</div>
+  </div>
+  <div class="stat-card <%= "stat-card-danger" if @overdue_matters.any? %>">
+    <div class="stat-value"><%= @overdue_matters.size %></div>
+    <div class="stat-label">Overdue Matters</div>
+  </div>
+  <div class="stat-card <%= "stat-card-danger" if @overdue_task_count > 0 %>">
+    <div class="stat-value"><%= @overdue_task_count %></div>
+    <div class="stat-label">Overdue Tasks</div>
+  </div>
+</div>
+
+<div class="section-header">
+  <h2>Overdue Matters</h2>
+</div>
+<% if @overdue_matters.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Matter</th>
+        <th>Client</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Due</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @overdue_matters.each do |matter| %>
+        <tr>
+          <td><%= link_to matter.title, matter %></td>
+          <td><%= matter.client ? link_to(matter.client.name, matter.client) : "—" %></td>
+          <td><%= matter.matter_type %></td>
+          <td><span class="badge badge-<%= matter.status.downcase %>"><%= matter.status %></span></td>
+          <td style="color: #dc2626; font-weight: 500;"><%= matter.due_date.strftime("%d %b %Y") %></td>
+          <td><%= link_to "View", matter, class: "btn btn-secondary btn-sm" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="empty">No overdue matters.</p>
+<% end %>
+
+<div class="section-header" style="margin-top: 2rem;">
+  <h2>Upcoming Deadlines <span style="font-size: 0.85rem; font-weight: 400; color: #6b7280;">— next 14 days</span></h2>
+</div>
+<% if @upcoming_matters.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Matter</th>
+        <th>Client</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Due</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @upcoming_matters.each do |matter| %>
+        <tr>
+          <td><%= link_to matter.title, matter %></td>
+          <td><%= matter.client ? link_to(matter.client.name, matter.client) : "—" %></td>
+          <td><%= matter.matter_type %></td>
+          <td><span class="badge badge-<%= matter.status.downcase %>"><%= matter.status %></span></td>
+          <td><%= matter.due_date.strftime("%d %b %Y") %></td>
+          <td><%= link_to "View", matter, class: "btn btn-secondary btn-sm" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="empty">No deadlines in the next 14 days.</p>
+<% end %>
+
+<div class="section-header" style="margin-top: 2rem;">
+  <h2>High Priority Tasks</h2>
+</div>
+<% if @high_priority_tasks.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Matter</th>
+        <th>Client</th>
+        <th>Status</th>
+        <th>Due</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @high_priority_tasks.each do |task| %>
+        <tr>
+          <td><%= task.title %></td>
+          <td><%= link_to task.matter.title, task.matter %></td>
+          <td><%= task.matter.client ? link_to(task.matter.client.name, task.matter.client) : "—" %></td>
+          <td><span class="badge badge-<%= task.status.downcase.gsub(" ", "-") %>"><%= task.status %></span></td>
+          <td style="<%= "color: #dc2626; font-weight: 500;" if task.due_date && task.due_date < Date.today %>">
+            <%= task.due_date&.strftime("%d %b %Y") || "—" %>
+          </td>
+          <td><%= link_to "View", task, class: "btn btn-secondary btn-sm" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="empty">No high priority tasks outstanding.</p>
+<% end %>

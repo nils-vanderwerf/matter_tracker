@@ -13,4 +13,5 @@ class Task < ApplicationRecord
   scope :completed, -> { where(status: "Completed") }
   scope :by_due_date, -> { order(:due_date) }
   scope :high_priority, -> { where(priority: "High") }
+  scope :overdue, -> { where.not(status: "Completed").where("due_date < ?", Date.today) }
 end
