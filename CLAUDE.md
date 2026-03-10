@@ -14,6 +14,12 @@ A Rails 7 application for tracking legal matters, tasks, and deadlines.
 - Prefer `scope` over class methods on models for query logic
 - Write tests in `test/` using Minitest (default Rails)
 
+## Git Commit Conventions
+- Each commit should represent one logical part of the build (e.g. a feature, a model, a set of specs)
+- Do not commit incremental or work-in-progress changes — squash into a single meaningful commit before pushing
+- Commit messages should be descriptive but concise: `Add notes feature`, `Add RSpec model specs with FactoryBot`
+- If commits accumulate, squash into logical groups with `git rebase -i` before pushing
+
 ## Running the App
 ```bash
 cd matter_tracker
