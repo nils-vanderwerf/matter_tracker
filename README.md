@@ -34,6 +34,12 @@ Built with the help of [Claude Code](https://claude.ai/code), Anthropic's AI cod
 **Dashboard**
 ![Dashboard](screenshots/dashboard.png)
 
+**Dashboard — filtered by matter type and priority **
+![Dashboard filtered](screenshots/dashboard_filtered.png)
+
+**Overdue matter**
+![Overdue matter](screenshots/matter_overdue.png)
+
 **Client page**
 ![Client page](screenshots/client_show.png)
 
