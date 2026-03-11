@@ -99,7 +99,7 @@ bundle exec rspec
 - Rails 7.0 with SQLite3
 - RSpec + FactoryBot for testing
 - Shallow nested routes
-- Hotwire/Turbo (no JS framework)
+- No JavaScript framework — plain HTML, ERB templates, Sprockets for assets
 
 ## What's missing (intentionally)
 

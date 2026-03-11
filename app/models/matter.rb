@@ -1,6 +1,7 @@
 class Matter < ApplicationRecord
   MATTER_TYPES = ["Family Law", "Criminal", "Conveyancing", "Commercial"].freeze
   STATUSES = ["Open", "Pending", "Closed"].freeze
+  # .freeze makes these arrays immutable — nobody can accidentally push to or modify them at runtime
 
   belongs_to :client, optional: true
   has_many :tasks, dependent: :destroy
