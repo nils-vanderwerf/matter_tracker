@@ -1,40 +1,27 @@
 # Matter Tracker
 
-I'm applying for a role at [Clio](https://www.clio.com/au/) — legal practice management software — and wanted to show up with more than a CV. So I built this: a stripped-back version of what Clio does, just to prove I understand the domain and can put together a real Rails app.
+I am applying for a role at [Clio](https://www.clio.com/au/) and wanted to show up with more than a CV. Built this to get my head around the domain - a stripped back version of what Clio does.
 
-It's a CRUD app for tracking legal matters. Clients have matters (cases), matters have tasks and notes, everything has a status and a due date. Not reinventing the wheel — just demonstrating I can work with the same basic concepts Clio is built around.
+Tracks legal matters for a law firm. Clients have matters, matters have tasks and notes, everything has a status and due date.
 
-Built with the help of [Claude Code](https://claude.ai/code), Anthropic's AI coding tool, which I used as a pair programmer throughout — writing code alongside it, reviewing what it produced, and guiding it when it went off track.
+Built with [Claude Code](https://claude.ai/code) as a pair programmer - I directed it, reviewed what it produced, and pushed back when it went off track.
 
 ---
 
 ## What it does
 
-- **Dashboard** — stat cards (open/pending/closed matters, overdue task count), overdue matters, upcoming deadlines, and high-priority tasks; filterable by matter type and task status, all columns sortable
-- **Clients** — create and manage clients; overdue matter due dates highlighted on the client page
-- **Matters** — track legal matters by type, status, and due date; close and reopen with full status history; overdue badge shown when past due and still open
-- **Tasks** — attach tasks to matters with priority and status; overdue indicator on past-due incomplete tasks
-- **Notes** — add notes to any matter, displayed inline
+- **Dashboard** - stat cards, overdue matters, upcoming deadlines, high priority tasks. Filterable by matter type and task status, all columns sortable
+- **Clients** - create and manage clients, overdue due dates highlighted
+- **Matters** - track by type, status and due date. Close and reopen with full status history. Overdue badge when past due and still open
+- **Tasks** - attached to matters with priority and status, overdue indicator on incomplete past-due tasks
+- **Notes** - add notes to any matter, shown inline
 
 ## Screenshots
-
-<!--
-  HOW TO ADD SCREENSHOTS:
-  1. Take your screenshots and save them into a /screenshots folder in the repo root
-  2. Replace each placeholder below with the actual image path
-  3. Syntax: ![Alt text](screenshots/your-file.png)
-
-  WHAT TO CAPTURE:
-  - Dashboard with seed data loaded (shows stat cards + all three tables)
-  - A matter show page — ideally one that's overdue (shows the red badge + status history)
-  - A client show page — shows the matters table with an overdue date in red
-  - Optional: the filter bar in use (matter_type selected, filtered results showing)
--->
 
 **Dashboard**
 ![Dashboard](screenshots/dashboard.png)
 
-**Dashboard — filtered by matter type and priority **
+**Dashboard - filtered by matter type and priority**
 ![Dashboard filtered](screenshots/dashboard_filtered.png)
 
 **Overdue matter**
@@ -51,24 +38,24 @@ Built with the help of [Claude Code](https://claude.ai/code), Anthropic's AI cod
 
 ---
 
-## Data Model
+## Data model
 
 ```
 Client             → has many Matters
-Matter             → belongs to Client, has many Tasks, has many Notes, has many MatterStatusChanges
+Matter             → belongs to Client, has many Tasks, Notes, MatterStatusChanges
 Task               → belongs to Matter
 Note               → belongs to Matter
-MatterStatusChange → belongs to Matter (audit log, written automatically on every status change)
+MatterStatusChange → belongs to Matter (audit log, written on every status change)
 ```
 
-## How data flows through the app
+## How data flows
 
-Rails uses the MVC pattern — every request passes through three layers:
+Rails MVC - every request goes through three layers:
 
-- **Routes** (`config/routes.rb`) — maps a URL + HTTP verb to a controller action. `POST /clients/21/matters` → `MattersController#create`
-- **Controller** — receives the request, talks to the model to read or write data, then sends a response (renders a view or redirects)
-- **Model** — the Ruby class that wraps the database table. Handles validations, associations, and business logic (e.g. the `close` method, status change callbacks)
-- **View** — an ERB template that takes the data the controller prepared and renders HTML back to the browser
+- **Routes** (`config/routes.rb`) - maps URL + HTTP verb to a controller action
+- **Controller** - receives the request, reads/writes via the model, renders a view or redirects
+- **Model** - the Ruby class wrapping the database table. Validations, associations, business logic
+- **View** - ERB template that takes whatever the controller prepared and renders HTML
 
 ```
 Browser → Routes → Controller → Model ↔ Database
@@ -96,11 +83,11 @@ bundle exec rspec
 
 ## Stack
 
-- Rails 7.0 with SQLite3
-- RSpec + FactoryBot for testing
+- Rails 7.0, SQLite3
+- RSpec + FactoryBot
 - Shallow nested routes
-- No JavaScript framework — plain HTML, ERB templates, Sprockets for assets
+- No JavaScript framework - plain HTML, ERB, Sprockets
 
-## What's missing (intentionally)
+## What's missing
 
-This is a proof-of-concept, not a production app. The obvious next steps would be authentication, time tracking, document uploads, and a proper calendar view — all things Clio does well.
+Proof of concept, not production. Next steps would be auth, time tracking, document uploads, calendar view - all things Clio does properly.

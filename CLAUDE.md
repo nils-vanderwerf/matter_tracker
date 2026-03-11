@@ -70,7 +70,7 @@ Represents a legal matter being tracked.
 
 Associations: `belongs_to :client` (optional), `has_many :tasks`, `has_many :notes`, `has_many :status_changes`
 Scopes: `open`, `pending`, `closed`, `overdue`, `by_due_date`
-Methods: `close`, `reopen`, `closed?`
+Methods: `close`, `reopen`, `closed?`, `overdue?`
 Callbacks: records initial status on create; records a `MatterStatusChange` whenever `status` changes
 
 ---
